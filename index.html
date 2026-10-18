@@ -21,37 +21,38 @@
 }
 
 :root {
-  --ink:       #030609;
-  --ink-2:     #070d12;
-  --charcoal:  #0c1519;
-  --panel:     #0a1419;
-  --panel-2:   #0d1a20;
-  --line:      rgba(95, 216, 232, 0.18);
-  --line-2:    rgba(95, 216, 232, 0.42);
+  --ink:        #03060a;
+  --ink-2:      #060d13;
+  --charcoal:   #0c1519;
+  --panel:      #0a1419;
+  --panel-2:    #0d1a20;
+  --line:       rgba(95, 216, 232, 0.18);
+  --line-2:     rgba(95, 216, 232, 0.45);
 
-  --cyan:      #5fd8e8;
-  --cyan-hi:   #b9f4ff;
-  --cyan-dim:  rgba(95, 216, 232, 0.35);
-  --cyan-glow: rgba(95, 216, 232, 0.75);
+  --cyan:       #5fd8e8;
+  --cyan-hi:    #b9f4ff;
+  --cyan-dim:   rgba(95, 216, 232, 0.35);
+  --cyan-glow:  rgba(95, 216, 232, 0.75);
 
-  --amber:     #ffc76b;
-  --amber-hi:  #ffe5b2;
-  --amber-dim: rgba(255, 199, 107, 0.35);
-  --amber-glow:rgba(255, 199, 107, 0.80);
+  --amber:      #ffc76b;
+  --amber-hi:   #ffe5b2;
+  --amber-dim:  rgba(255, 199, 107, 0.35);
+  --amber-glow: rgba(255, 199, 107, 0.82);
 
-  --red:       #ff5a7a;
-  --paper:     #dfe9ee;
-  --paper-2:   #a8bcc7;
+  --red:        #ff5a7a;
+  --green:      #7bf0b8;
+  --paper:      #dfe9ee;
+  --paper-2:    #a8bcc7;
 
   --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Monaco,
           "Cascadia Mono", "Roboto Mono", Consolas, monospace;
   --sans: "Helvetica Neue", "Inter", -apple-system, BlinkMacSystemFont,
           "Segoe UI", Roboto, Arial, sans-serif;
 
-  --ease-out:   cubic-bezier(0.16, 1, 0.30, 1);
-  --ease-soft:  cubic-bezier(0.22, 0.90, 0.24, 1);
-  --ease-snap:  cubic-bezier(0.34, 1.42, 0.64, 1);
-  --ease-drop:  cubic-bezier(0.55, 0, 0.75, 0.20);
+  --ease-out:  cubic-bezier(0.16, 1, 0.30, 1);
+  --ease-soft: cubic-bezier(0.22, 0.90, 0.24, 1);
+  --ease-snap: cubic-bezier(0.34, 1.42, 0.64, 1);
+  --ease-drop: cubic-bezier(0.55, 0, 0.75, 0.20);
 }
 
 html, body {
@@ -102,12 +103,12 @@ canvas#bg {
   pointer-events: none;
   background:
     radial-gradient(ellipse 95% 75% at 50% 42%,
-                    transparent 28%, rgba(0,0,0,0.60) 100%),
+                    transparent 28%, rgba(0,0,0,0.62) 100%),
     linear-gradient(to bottom,
-                    rgba(0,0,0,0.32) 0%,
+                    rgba(0,0,0,0.34) 0%,
                     transparent 22%,
                     transparent 68%,
-                    rgba(0,0,0,0.55) 100%);
+                    rgba(0,0,0,0.58) 100%);
 }
 
 #grain {
@@ -115,7 +116,7 @@ canvas#bg {
   inset: 0;
   z-index: 1;
   pointer-events: none;
-  opacity: 0.055;
+  opacity: 0.052;
   mix-blend-mode: overlay;
   background-image:
     repeating-linear-gradient(0deg, rgba(255,255,255,0.06) 0 1px, transparent 1px 2px),
@@ -148,7 +149,7 @@ canvas#bg {
 }
 
 /* ---------------------------------------------------------------------
-   IDLE / FRONT PAGE
+   IDLE
    --------------------------------------------------------------------- */
 #idle {
   display: flex;
@@ -314,7 +315,7 @@ canvas#bg {
 }
 
 /* ---------------------------------------------------------------------
-   STAMP ("REVIEW REQUESTED")
+   STAMP
    --------------------------------------------------------------------- */
 #stamp {
   opacity: 0;
@@ -526,6 +527,35 @@ canvas#bg {
   50%      { opacity: 1; }
 }
 
+/* Live commentary line */
+#commentary {
+  position: absolute;
+  left: 50%;
+  bottom: clamp(20px, 4%, 34px);
+  transform: translateX(-50%) translateY(6px);
+  font-family: var(--mono);
+  font-size: clamp(0.44rem, 1.15vw, 0.66rem);
+  letter-spacing: 0.26em;
+  color: rgba(235, 250, 255, 0.92);
+  text-shadow: 0 0 14px rgba(95, 216, 232, 0.8);
+  background: rgba(2, 8, 12, 0.72);
+  border: 1px solid rgba(95, 216, 232, 0.28);
+  border-radius: 2px;
+  padding: 0.55em 0.9em 0.55em 1.16em;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease, transform 0.5s var(--ease-out);
+  max-width: 90%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#commentary.on {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
 /* Tick badges */
 #ticks {
   position: absolute;
@@ -607,7 +637,7 @@ canvas#bg {
 }
 
 /* ---------------------------------------------------------------------
-   VERDICT ("NOT OUT")
+   VERDICT
    --------------------------------------------------------------------- */
 #verdict {
   --fs: clamp(2.4rem, 12.8vw, 7.6rem);
@@ -706,6 +736,8 @@ canvas#bg {
   transition: opacity 0.75s ease;
   width: min(94vw, 1100px);
   z-index: 3;
+  transform-style: preserve-3d;
+  transform: rotateZ(-0.15deg);
 }
 
 #board.on {
@@ -737,9 +769,42 @@ canvas#bg {
   justify-content: center;
   align-items: center;
   width: 100%;
+  position: relative;
 }
 
-/* --- single tile --- */
+/* sweeping light across the row once settled */
+.row::after {
+  content: "";
+  position: absolute;
+  inset: -8% -6%;
+  background: linear-gradient(115deg,
+              transparent 30%,
+              rgba(255, 220, 160, 0.00) 40%,
+              rgba(255, 225, 170, 0.20) 50%,
+              rgba(255, 220, 160, 0.00) 60%,
+              transparent 70%);
+  pointer-events: none;
+  opacity: 0;
+  transform: translateX(-100%);
+  z-index: 10;
+}
+
+#board.done .row::after {
+  animation: lightSweep 3.2s cubic-bezier(0.45, 0.05, 0.55, 0.95) 0.2s;
+}
+
+#board.done .row:nth-of-type(3)::after {
+  animation-delay: 0.55s;
+}
+
+@keyframes lightSweep {
+  0%   { opacity: 0; transform: translateX(-100%); }
+  15%  { opacity: 1; }
+  85%  { opacity: 1; }
+  100% { opacity: 0; transform: translateX(100%); }
+}
+
+/* --- tile --- */
 .tile {
   position: relative;
   perspective: 560px;
@@ -783,79 +848,28 @@ canvas#bg {
   pointer-events: none;
 }
 
-/* Four-layered split-flap mechanics */
-.th,
-.tf {
-  position: absolute;
-  left: 0;
-  width: 100%;
-  height: 50%;
-  overflow: hidden;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
+/* brief amber flash when a tile settles */
+.tile.settled {
+  animation: tileSettle 0.60s ease-out;
 }
 
-.th-top,
-.tf-top {
-  top: 0;
-  transform-origin: bottom center;
+@keyframes tileSettle {
+  0% {
+    box-shadow:
+      inset 0 0 0 1px rgba(255, 220, 160, 0.55),
+      inset 0 1px 0 rgba(255, 255, 255, 0.06),
+      0 3px 10px rgba(0, 0, 0, 0.55),
+      0 0 34px rgba(255, 199, 107, 0.55);
+  }
+  100% {
+    box-shadow:
+      inset 0 0 0 1px rgba(255, 255, 255, 0.055),
+      inset 0 1px 0 rgba(255, 255, 255, 0.035),
+      0 3px 10px rgba(0, 0, 0, 0.55);
+  }
 }
 
-.th-bot,
-.tf-bot {
-  top: 50%;
-  transform-origin: top center;
-}
-
-.th i,
-.tf i {
-  position: absolute;
-  left: 0;
-  width: 100%;
-  height: 200%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-style: normal;
-  font-weight: 700;
-  line-height: 1;
-  color: #eaf7fb;
-  letter-spacing: 0.02em;
-}
-
-.th-top i,
-.tf-top i {
-  top: 0;
-}
-
-.th-bot i,
-.tf-bot i {
-  top: -100%;
-}
-
-/* static halves: subtle horizontal gradient */
-.th-top {
-  background: linear-gradient(to bottom, #1a2932 0%, #101b21 100%);
-}
-
-.th-bot {
-  background: linear-gradient(to bottom, #0a1216 0%, #14212a 100%);
-}
-
-/* flipping halves */
-.tf-top {
-  background: linear-gradient(to bottom, #1e313c 0%, #13232c 100%);
-  z-index: 4;
-  opacity: 0;
-}
-
-.tf-bot {
-  background: linear-gradient(to bottom, #0c161b 0%, #1a2b36 100%);
-  z-index: 4;
-  opacity: 0;
-}
-
-/* settled glint */
+/* ambient glint when fully settled */
 #board.done .tile::before {
   animation: tileGlint 6.5s ease-in-out infinite;
   animation-delay: var(--glint-delay, 0s);
@@ -875,7 +889,51 @@ canvas#bg {
                       rgba(255, 255, 255, 0.03), transparent 40%); }
 }
 
-/* wish text */
+/* four layer mechanics */
+.th, .tf {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 50%;
+  overflow: hidden;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.th-top, .tf-top {
+  top: 0;
+  transform-origin: bottom center;
+}
+
+.th-bot, .tf-bot {
+  top: 50%;
+  transform-origin: top center;
+}
+
+.th i, .tf i {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 200%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 1;
+  color: #eaf7fb;
+  letter-spacing: 0.02em;
+}
+
+.th-top i, .tf-top i { top: 0; }
+.th-bot i, .tf-bot i { top: -100%; }
+
+.th-top { background: linear-gradient(to bottom, #1a2932 0%, #101b21 100%); }
+.th-bot { background: linear-gradient(to bottom, #0a1216 0%, #14212a 100%); }
+.tf-top { background: linear-gradient(to bottom, #1e313c 0%, #13232c 100%); z-index: 4; opacity: 0; }
+.tf-bot { background: linear-gradient(to bottom, #0c161b 0%, #1a2b36 100%); z-index: 4; opacity: 0; }
+
+/* wish */
 #wish {
   max-width: min(64ch, 90vw);
   text-align: center;
@@ -897,12 +955,6 @@ canvas#bg {
   font-style: normal;
   color: var(--amber);
   text-shadow: 0 0 22px rgba(255, 199, 107, 0.45);
-}
-
-#wish strong {
-  font-weight: 700;
-  color: var(--cyan-hi);
-  text-shadow: 0 0 18px rgba(95, 216, 232, 0.55);
 }
 
 #board.done #wish {
@@ -1029,6 +1081,11 @@ canvas#bg {
   #verdict {
     --fs: clamp(2rem, 13vw, 4rem);
   }
+  #commentary {
+    font-size: clamp(0.40rem, 2.6vw, 0.58rem);
+    letter-spacing: 0.18em;
+    padding: 0.5em 0.7em 0.5em 0.9em;
+  }
 }
 
 @media (max-height: 640px) {
@@ -1044,42 +1101,24 @@ canvas#bg {
    REDUCED MOTION
    --------------------------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
+  *, *::before, *::after {
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.20s !important;
   }
-  #scene {
-    transition: none !important;
-  }
-  #scene.push {
-    transform: none;
-  }
-  .vh {
-    transition: opacity 0.40s ease !important;
-  }
-  #verdict.split .vh-top {
-    transform: translateY(-1.2em);
-  }
-  #verdict.split .vh-bot {
-    transform: translateY(1.2em);
-  }
+  #scene { transition: none !important; }
+  #scene.push { transform: none; }
+  .vh { transition: opacity 0.40s ease !important; }
+  #verdict.split .vh-top { transform: translateY(-1.2em); }
+  #verdict.split .vh-bot { transform: translateY(1.2em); }
   #monitor {
     transition: opacity 0.40s ease !important;
     transform: none !important;
   }
-  #monitor.on,
-  #monitor.gone {
-    transform: none !important;
-  }
-  #scene.shake {
-    animation: none !important;
-  }
-  .mon-scan::after {
-    display: none;
-  }
+  #monitor.on, #monitor.gone { transform: none !important; }
+  #scene.shake { animation: none !important; }
+  .mon-scan::after { display: none; }
+  #board.done .row::after { animation: none; }
 }
 </style>
 </head>
@@ -1101,7 +1140,7 @@ canvas#bg {
 
     <!-- IDLE -->
     <div id="idle">
-      <div class="kicker">Review Protocol &middot; v3.2</div>
+      <div class="kicker">Review Protocol &middot; v4.0</div>
       <h1 id="title">DRS REVIEW SYSTEM</h1>
       <div class="rule"><i></i></div>
       <button id="beginBtn" class="btn" type="button">
@@ -1123,9 +1162,10 @@ canvas#bg {
         <div class="hud-tl">CAM 04 &middot; SLOW-MO &times;0.25</div>
         <div class="hud-tr">REC <i class="dot"></i></div>
         <div class="hud-bl">BALL TRACKING &middot; ACTIVE</div>
-        <div class="hud-br">TECH REVIEW &middot; 3rd UMPIRE</div>
+        <div class="hud-br">TECH REVIEW &middot; 3RD UMPIRE</div>
       </div>
       <div id="pending">DECISION PENDING</div>
+      <div id="commentary">Third umpire checking ball tracking&hellip;</div>
       <div id="ticks">
         <div class="tick" id="tk1">
           <span class="ic">&#10003;</span>
@@ -1194,17 +1234,12 @@ const clamp  = (v, a, b) => (v < a ? a : (v > b ? b : v));
 const lerp   = (a, b, t) => a + (b - a) * t;
 const rand   = (a, b) => a + Math.random() * (b - a);
 const randI  = (a, b) => Math.floor(rand(a, b + 1));
-const pick   = (arr) => arr[(Math.random() * arr.length) | 0];
 const now    = () => performance.now();
 
 const easeInOutCubic = (t) =>
   t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 const easeOutCubic   = (t) => 1 - Math.pow(1 - t, 3);
 const easeOutQuart   = (t) => 1 - Math.pow(1 - t, 4);
-const easeOutBack    = (t) => {
-  const c1 = 1.70158, c3 = c1 + 1;
-  return 1 + c3 * Math.pow(t - 1, 3) + c1 * Math.pow(t - 1, 2);
-};
 
 const REDUCED = window.matchMedia
   ? window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -1230,13 +1265,11 @@ const SFX = (function () {
     master.gain.value = 0.55;
     master.connect(ctx.destination);
 
-    /* noise buffer */
     const len = Math.floor(ctx.sampleRate * 0.35);
     noiseBuf = ctx.createBuffer(1, len, ctx.sampleRate);
     const d = noiseBuf.getChannelData(0);
     for (let i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
 
-    /* cheap reverb using convolution with decaying noise */
     try {
       const irLen = Math.floor(ctx.sampleRate * 1.2);
       const ir = ctx.createBuffer(2, irLen, ctx.sampleRate);
@@ -1244,8 +1277,7 @@ const SFX = (function () {
         const data = ir.getChannelData(ch);
         for (let i = 0; i < irLen; i++) {
           data[i] = (Math.random() * 2 - 1)
-                  * Math.pow(1 - i / irLen, 2.8)
-                  * 0.6;
+                  * Math.pow(1 - i / irLen, 2.8) * 0.6;
         }
       }
       reverb = ctx.createConvolver();
@@ -1272,13 +1304,11 @@ const SFX = (function () {
     }
   }
 
-  /* mechanical flap click — layered noise burst + wooden thump */
   function flap(vol) {
     if (!enabled || !ctx) return;
     vol = vol == null ? 0.16 : vol;
     const t = ctx.currentTime;
 
-    /* noise transient */
     const src = ctx.createBufferSource();
     src.buffer = noiseBuf;
     src.playbackRate.value = rand(0.75, 1.55);
@@ -1296,11 +1326,9 @@ const SFX = (function () {
     src.connect(bp);
     bp.connect(g);
     routeWithReverb(g, 0.08);
-
     src.start(t);
     src.stop(t + 0.10);
 
-    /* wooden body */
     const o = ctx.createOscillator();
     o.type = 'triangle';
     o.frequency.setValueAtTime(rand(155, 265), t);
@@ -1312,12 +1340,10 @@ const SFX = (function () {
 
     o.connect(g2);
     routeWithReverb(g2, 0.04);
-
     o.start(t);
     o.stop(t + 0.10);
   }
 
-  /* low sub hit */
   function sub(freq, dur, vol) {
     if (!enabled || !ctx) return;
     freq = freq == null ? 60 : freq;
@@ -1337,12 +1363,10 @@ const SFX = (function () {
 
     o.connect(g);
     routeWithReverb(g, 0.22);
-
     o.start(t);
     o.stop(t + dur + 0.06);
   }
 
-  /* rising filtered noise */
   function riser(dur) {
     if (!enabled || !ctx) return;
     dur = dur || 0.9;
@@ -1366,12 +1390,10 @@ const SFX = (function () {
     src.connect(bp);
     bp.connect(g);
     routeWithReverb(g, 0.30);
-
     src.start(t);
     src.stop(t + dur + 0.06);
   }
 
-  /* heavy metallic stamp */
   function stamp() {
     if (!enabled || !ctx) return;
     const t = ctx.currentTime;
@@ -1391,14 +1413,12 @@ const SFX = (function () {
     src.connect(bp);
     bp.connect(g);
     routeWithReverb(g, 0.28);
-
     src.start(t);
     src.stop(t + 0.32);
 
     sub(52, 0.72, 0.62);
   }
 
-  /* tiny tick */
   function tick() {
     if (!enabled || !ctx) return;
     const t = ctx.currentTime;
@@ -1414,12 +1434,10 @@ const SFX = (function () {
 
     o.connect(g);
     routeWithReverb(g, 0.16);
-
     o.start(t);
     o.stop(t + 0.15);
   }
 
-  /* descending whoosh for board settlement */
   function whoosh(dur) {
     if (!enabled || !ctx) return;
     dur = dur || 0.6;
@@ -1443,12 +1461,10 @@ const SFX = (function () {
     src.connect(bp);
     bp.connect(g);
     routeWithReverb(g, 0.34);
-
     src.start(t);
     src.stop(t + dur + 0.06);
   }
 
-  /* bright bell shimmer for final settle */
   function shimmer() {
     if (!enabled || !ctx) return;
     const t = ctx.currentTime;
@@ -1465,19 +1481,68 @@ const SFX = (function () {
 
       o.connect(g);
       routeWithReverb(g, 0.55);
-
       o.start(t + i * 0.05);
       o.stop(t + i * 0.05 + 1.7);
     });
   }
 
+  /* low crowd murmur for atmosphere */
+  function murmur(dur) {
+    if (!enabled || !ctx) return;
+    dur = dur || 3.0;
+    const t = ctx.currentTime;
+
+    const src = ctx.createBufferSource();
+    src.buffer = noiseBuf;
+    src.loop = true;
+
+    const lp = ctx.createBiquadFilter();
+    lp.type = 'lowpass';
+    lp.frequency.value = 480;
+    lp.Q.value = 0.8;
+
+    const g = ctx.createGain();
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.linearRampToValueAtTime(0.055, t + 0.5);
+    g.gain.linearRampToValueAtTime(0.070, t + dur * 0.6);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+
+    src.connect(lp);
+    lp.connect(g);
+    routeWithReverb(g, 0.42);
+    src.start(t);
+    src.stop(t + dur + 0.06);
+  }
+
+  /* camera shutter tick for celebration */
+  function shutter() {
+    if (!enabled || !ctx) return;
+    const t = ctx.currentTime;
+
+    const src = ctx.createBufferSource();
+    src.buffer = noiseBuf;
+    src.playbackRate.value = rand(1.4, 2.2);
+
+    const bp = ctx.createBiquadFilter();
+    bp.type = 'bandpass';
+    bp.frequency.value = rand(2400, 4200);
+    bp.Q.value = 2.2;
+
+    const g = ctx.createGain();
+    g.gain.setValueAtTime(0.04, t);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + 0.03);
+
+    src.connect(bp);
+    bp.connect(g);
+    routeWithReverb(g, 0.12);
+    src.start(t);
+    src.stop(t + 0.05);
+  }
+
   return {
-    init, resume, flap, sub, riser, stamp, tick, whoosh, shimmer,
+    init, resume, flap, sub, riser, stamp, tick, whoosh, shimmer, murmur, shutter,
     get enabled() { return enabled; },
-    set enabled(v) {
-      enabled = !!v;
-      if (enabled) { init(); resume(); }
-    },
+    set enabled(v) { enabled = !!v; if (enabled) { init(); resume(); } },
     unlock() { init(); resume(); }
   };
 })();
@@ -1516,9 +1581,8 @@ function sizeCanvases() {
 /* =====================================================================
    3. BACKGROUND ATMOSPHERE
    ===================================================================== */
-
-/* Drifting dust particles */
 let dust = [];
+let cameraFlashes = [];  /* celebratory flashes in the stands */
 
 function initDust() {
   dust = [];
@@ -1537,7 +1601,6 @@ function initDust() {
   }
 }
 
-/* radial glow helper */
 function glow(ctx, x, y, r, colorStops) {
   const g = ctx.createRadialGradient(x, y, 0, x, y, r);
   for (let i = 0; i < colorStops.length; i++) {
@@ -1549,12 +1612,10 @@ function glow(ctx, x, y, r, colorStops) {
   ctx.fill();
 }
 
-/* floodlight tower silhouette */
 function drawFloodlightTower(ctx, x, baseY, heightPx, scale) {
   ctx.save();
   ctx.translate(x, baseY);
 
-  /* pole */
   const poleW = Math.max(2, 3 * scale);
   const g = ctx.createLinearGradient(0, 0, 0, -heightPx);
   g.addColorStop(0, 'rgba(10, 20, 26, 0.95)');
@@ -1562,13 +1623,11 @@ function drawFloodlightTower(ctx, x, baseY, heightPx, scale) {
   ctx.fillStyle = g;
   ctx.fillRect(-poleW / 2, -heightPx, poleW, heightPx);
 
-  /* cross-arm and lamp bank */
   const armW = 42 * scale;
   const armY = -heightPx + 6 * scale;
   ctx.fillStyle = 'rgba(30, 46, 56, 0.95)';
   ctx.fillRect(-armW / 2, armY, armW, 4 * scale);
 
-  /* lamps */
   const lampCount = 5;
   const spacing = armW / lampCount;
   for (let i = 0; i < lampCount; i++) {
@@ -1576,7 +1635,6 @@ function drawFloodlightTower(ctx, x, baseY, heightPx, scale) {
     const ly = armY + 2 * scale;
     const lr = 3.2 * scale;
 
-    /* bloom */
     ctx.save();
     ctx.globalCompositeOperation = 'lighter';
     glow(ctx, lx, ly, lr * 22, [
@@ -1587,7 +1645,6 @@ function drawFloodlightTower(ctx, x, baseY, heightPx, scale) {
     ]);
     ctx.restore();
 
-    /* lamp core */
     ctx.beginPath();
     ctx.arc(lx, ly, lr, 0, Math.PI * 2);
     ctx.fillStyle = 'rgba(250, 253, 255, 0.96)';
@@ -1601,12 +1658,10 @@ function drawFloodlightTower(ctx, x, baseY, heightPx, scale) {
   ctx.restore();
 }
 
-/* distant stadium stands silhouette with crowd bokeh */
 function drawStands(ctx, cx, baseY, widthPx, heightPx) {
   const left  = cx - widthPx / 2;
   const right = cx + widthPx / 2;
 
-  /* tiered silhouette */
   ctx.save();
   ctx.beginPath();
   ctx.moveTo(left, baseY);
@@ -1628,16 +1683,16 @@ function drawStands(ctx, cx, baseY, widthPx, heightPx) {
   ctx.fill();
   ctx.restore();
 
-  /* crowd bokeh */
+  /* crowd bokeh (steady) */
   if (!REDUCED) {
-    const n = Math.floor(widthPx * 0.28);
+    const n = Math.floor(widthPx * 0.26);
     ctx.save();
     ctx.globalCompositeOperation = 'lighter';
     for (let i = 0; i < n; i++) {
       const bx = left + Math.random() * widthPx;
       const by = baseY - heightPx * rand(0.15, 0.80);
-      const br = rand(0.35, 1.15);
-      const a = rand(0.08, 0.42);
+      const br = rand(0.35, 1.10);
+      const a = rand(0.06, 0.36);
       const warm = Math.random() < 0.65;
       ctx.fillStyle = warm
         ? 'rgba(255, 220, 175, ' + a.toFixed(3) + ')'
@@ -1648,13 +1703,63 @@ function drawStands(ctx, cx, baseY, widthPx, heightPx) {
     }
     ctx.restore();
   }
+
+  return { left, right, top: baseY - heightPx * 0.85, bottom: baseY };
+}
+
+/* Spawn celebratory camera flashes in the stands */
+function spawnCameraFlashes(standRegion, count, duration) {
+  const now = performance.now();
+  for (let i = 0; i < count; i++) {
+    const startDelay = Math.random() * duration;
+    cameraFlashes.push({
+      x: standRegion.left + Math.random() * (standRegion.right - standRegion.left),
+      y: standRegion.top + Math.random() * (standRegion.bottom - standRegion.top) * 0.9,
+      bornAt: now + startDelay,
+      life: 320 + Math.random() * 260,
+      size: 1.2 + Math.random() * 3.2
+    });
+  }
+}
+
+function drawCameraFlashes(nowMs) {
+  if (!cameraFlashes.length) return;
+  bgx.save();
+  bgx.globalCompositeOperation = 'lighter';
+
+  for (let i = cameraFlashes.length - 1; i >= 0; i--) {
+    const f = cameraFlashes[i];
+    const t = nowMs - f.bornAt;
+    if (t < 0) continue;
+    if (t > f.life) { cameraFlashes.splice(i, 1); continue; }
+
+    const p = t / f.life;
+    /* sharp rise, quick fall */
+    const alpha = p < 0.15
+      ? (p / 0.15)
+      : 1 - (p - 0.15) / 0.85;
+    const a = Math.max(0, alpha) * 0.92;
+
+    const r = f.size * (0.8 + p * 2.2);
+
+    bgx.fillStyle = 'rgba(255, 250, 240, ' + a.toFixed(3) + ')';
+    bgx.beginPath();
+    bgx.arc(f.x, f.y, r, 0, Math.PI * 2);
+    bgx.fill();
+
+    bgx.fillStyle = 'rgba(255, 240, 210, ' + (a * 0.28).toFixed(3) + ')';
+    bgx.beginPath();
+    bgx.arc(f.x, f.y, r * 3.4, 0, Math.PI * 2);
+    bgx.fill();
+  }
+
+  bgx.restore();
 }
 
 function drawBG(nowMs) {
   const t = nowMs * 0.001;
   bgx.clearRect(0, 0, W, H);
 
-  /* sky gradient */
   let g = bgx.createLinearGradient(0, 0, 0, H);
   g.addColorStop(0.00, '#0b1a24');
   g.addColorStop(0.35, '#08121a');
@@ -1663,7 +1768,6 @@ function drawBG(nowMs) {
   bgx.fillStyle = g;
   bgx.fillRect(0, 0, W, H);
 
-  /* upper atmospheric glow */
   bgx.globalCompositeOperation = 'lighter';
   glow(bgx, W * 0.5, -H * 0.22, Math.max(W, H) * 0.95, [
     [0, 'rgba(112, 182, 212, 0.085)'],
@@ -1672,10 +1776,8 @@ function drawBG(nowMs) {
   ]);
   bgx.globalCompositeOperation = 'source-over';
 
-  /* distant stands */
-  drawStands(bgx, W * 0.5, H * 0.63, W * 1.35, H * 0.40);
+  const standRegion = drawStands(bgx, W * 0.5, H * 0.63, W * 1.35, H * 0.40);
 
-  /* floodlight towers */
   const towerY = H * 0.68;
   const towerH = H * 0.55;
   const towers = [
@@ -1686,7 +1788,6 @@ function drawBG(nowMs) {
   ];
   towers.forEach(tw => drawFloodlightTower(bgx, tw.x, towerY, towerH * tw.scale, tw.scale));
 
-  /* volumetric god-rays from lamps */
   bgx.save();
   bgx.globalCompositeOperation = 'lighter';
   for (let i = 0; i < 4; i++) {
@@ -1711,7 +1812,6 @@ function drawBG(nowMs) {
   }
   bgx.restore();
 
-  /* cold hero spotlight */
   bgx.save();
   bgx.globalCompositeOperation = 'lighter';
   const sx = W * 0.5;
@@ -1729,7 +1829,6 @@ function drawBG(nowMs) {
   bgx.fill();
   bgx.restore();
 
-  /* pitch grid */
   const hy = H * 0.64;
   bgx.save();
   bgx.beginPath();
@@ -1756,7 +1855,6 @@ function drawBG(nowMs) {
   bgx.stroke();
   bgx.restore();
 
-  /* drifting dust */
   bgx.save();
   bgx.globalCompositeOperation = 'lighter';
   for (let i = 0; i < dust.length; i++) {
@@ -1783,12 +1881,14 @@ function drawBG(nowMs) {
     bgx.fill();
   }
   bgx.restore();
+
+  /* celebratory camera flashes in the stands */
+  drawCameraFlashes(nowMs);
 }
 
 /* =====================================================================
-   4. PITCH PROJECTION SYSTEM
+   4. PITCH PROJECTION
    ===================================================================== */
-/* u: horizontal position (-1..1, 0 = center); v: depth (0 = far, 1 = stumps); h: height (0 = ground) */
 function proj(u, v, h) {
   const s  = 1 / (1 + 2.65 * v);
   const cx = RW / 2;
@@ -1801,7 +1901,6 @@ function proj(u, v, h) {
   };
 }
 
-/* Ball delivery model (shared by replay & tracking) */
 function trackPoint(v) {
   const u = 0.18 - 0.16 * Math.pow(clamp((v - 0.28) / 0.82, 0, 1), 0.70);
   let h;
@@ -1819,9 +1918,8 @@ function trackPoint(v) {
 }
 
 /* =====================================================================
-   5. REPLAY / TRACKING SCENE PIECES
+   5. SCENE PIECES
    ===================================================================== */
-
 function drawPitchSurface() {
   const N = 9;
   for (let i = 0; i < N; i++) {
@@ -1841,7 +1939,6 @@ function drawPitchSurface() {
     rpx.fill();
   }
 
-  /* crease lines */
   rpx.strokeStyle = 'rgba(210, 240, 255, 0.30)';
   rpx.lineWidth = Math.max(1, RW * 0.0016);
   let a = proj(-1.05, 0.965, 0), b = proj(1.05, 0.965, 0);
@@ -1857,7 +1954,6 @@ function drawPitchSurface() {
   rpx.lineTo(b.x, b.y);
   rpx.stroke();
 
-  /* side bounds */
   rpx.strokeStyle = 'rgba(120, 200, 230, 0.10)';
   rpx.beginPath();
   let p0 = proj(-1, 0, 0), p1 = proj(-1, 1.02, 0);
@@ -1897,7 +1993,6 @@ function drawStumps() {
     rpx.stroke();
   }
 
-  /* bails */
   rpx.fillStyle = '#eaf8ff';
   const b1 = proj(-0.155, 1, 1.02);
   const b2 = proj(0.155, 1, 1.02);
@@ -1933,7 +2028,6 @@ function drawPads() {
     rpx.stroke();
   }
 
-  /* bat */
   const batA = proj(-0.42, 0.90, 0.05);
   const batB = proj(-0.36, 0.90, 0.95);
   rpx.beginPath();
@@ -1947,21 +2041,18 @@ function drawPads() {
 }
 
 /* =====================================================================
-   6. REPLAY RENDERER
+   6. BALL
    ===================================================================== */
 function drawBall(pos, r, spin) {
-  /* shadow on pitch */
   const shadowY = pos.gy + RH * 0.01;
   rpx.save();
   rpx.globalAlpha = 0.35 * pos.s;
   rpx.beginPath();
   rpx.ellipse(pos.x, shadowY, r * 1.6, r * 0.42, 0, 0, Math.PI * 2);
   rpx.fillStyle = 'rgba(0, 0, 0, 0.72)';
-  rpx.filter = 'blur(2px)';
   rpx.fill();
   rpx.restore();
 
-  /* chromatic aberration halos */
   rpx.save();
   rpx.globalCompositeOperation = 'lighter';
   rpx.beginPath();
@@ -1974,7 +2065,6 @@ function drawBall(pos, r, spin) {
   rpx.fill();
   rpx.restore();
 
-  /* base ball */
   const bg = rpx.createRadialGradient(
     pos.x - r * 0.35, pos.y - r * 0.35, r * 0.12,
     pos.x, pos.y, r
@@ -1992,7 +2082,6 @@ function drawBall(pos, r, spin) {
   rpx.fill();
   rpx.restore();
 
-  /* seam — visible only when ball is large enough */
   if (r > 5) {
     rpx.save();
     rpx.translate(pos.x, pos.y);
@@ -2003,20 +2092,21 @@ function drawBall(pos, r, spin) {
     rpx.lineWidth = Math.max(0.6, r * 0.055);
     rpx.stroke();
 
-    /* stitches */
     rpx.strokeStyle = 'rgba(80, 30, 20, 0.65)';
     rpx.lineWidth = Math.max(0.5, r * 0.035);
     for (let i = -3; i <= 3; i++) {
       const ang = (i / 4) * Math.PI * 0.4;
       rpx.beginPath();
       rpx.moveTo(Math.cos(ang) * r * 0.94, Math.sin(ang) * r * 0.32);
-      rpx.lineTo(Math.cos(ang) * r * 0.94 + r * 0.02, Math.sin(ang) * r * 0.32 - r * 0.04);
+      rpx.lineTo(
+        Math.cos(ang) * r * 0.94 + r * 0.02,
+        Math.sin(ang) * r * 0.32 - r * 0.04
+      );
       rpx.stroke();
     }
     rpx.restore();
   }
 
-  /* specular glint */
   rpx.save();
   rpx.beginPath();
   rpx.arc(pos.x - r * 0.32, pos.y - r * 0.32, r * 0.22, 0, Math.PI * 2);
@@ -2025,7 +2115,218 @@ function drawBall(pos, r, spin) {
   rpx.restore();
 }
 
+/* =====================================================================
+   7. REPLAY + HUD WIDGETS
+   ===================================================================== */
+let replayBootT0 = 0;
+
+function drawBootPrelude(elapsed) {
+  /* 0–380ms: black with static lines */
+  if (elapsed < 380) {
+    rpx.fillStyle = '#04080b';
+    rpx.fillRect(0, 0, RW, RH);
+
+    const lineCount = 20;
+    for (let i = 0; i < lineCount; i++) {
+      const y = Math.random() * RH;
+      const h = Math.random() * 2 + 0.5;
+      const a = Math.random() * 0.35;
+      rpx.fillStyle = 'rgba(120, 200, 230, ' + a.toFixed(3) + ')';
+      rpx.fillRect(0, y, RW, h);
+    }
+    return true;
+  }
+
+  /* 380–1000ms: 2x2 camera grid, static fades, labels */
+  if (elapsed < 1000) {
+    const p = (elapsed - 380) / 620;
+    rpx.fillStyle = '#04080b';
+    rpx.fillRect(0, 0, RW, RH);
+
+    const gap = 3;
+    const cw = (RW - gap) / 2;
+    const ch = (RH - gap) / 2;
+
+    const feeds = [
+      { x: 0,           y: 0,           label: 'CAM 04 · FRONT' },
+      { x: cw + gap,    y: 0,           label: 'CAM 07 · SIDE' },
+      { x: 0,           y: ch + gap,    label: 'CAM 12 · TOP' },
+      { x: cw + gap,    y: ch + gap,    label: 'ULTRA EDGE' }
+    ];
+
+    const staticAlpha = Math.max(0, 1 - p * 1.6);
+
+    feeds.forEach((f, i) => {
+      /* background */
+      rpx.fillStyle = 'rgba(6, 14, 18, 0.95)';
+      rpx.fillRect(f.x, f.y, cw, ch);
+
+      /* static noise */
+      const lines = 20;
+      for (let k = 0; k < lines; k++) {
+        const yy = f.y + Math.random() * ch;
+        const a = Math.random() * 0.4 * staticAlpha;
+        rpx.fillStyle = 'rgba(140, 220, 245, ' + a.toFixed(3) + ')';
+        rpx.fillRect(f.x, yy, cw, 0.8);
+      }
+
+      /* border */
+      rpx.strokeStyle = 'rgba(95, 216, 232, ' + (0.55 - p * 0.3).toFixed(2) + ')';
+      rpx.lineWidth = 1;
+      rpx.strokeRect(f.x + 0.5, f.y + 0.5, cw - 1, ch - 1);
+
+      /* label */
+      rpx.fillStyle = 'rgba(127, 230, 245, ' + (0.85 * (1 - p * 0.7)).toFixed(2) + ')';
+      rpx.font = '600 ' + Math.max(7, RW * 0.0135) + 'px ui-monospace, monospace';
+      rpx.textAlign = 'left';
+      rpx.textBaseline = 'top';
+      rpx.fillText(f.label, f.x + 8, f.y + 8);
+    });
+
+    /* "SYNCING" label */
+    const syncAlpha = Math.sin(p * Math.PI) * 0.9;
+    rpx.fillStyle = 'rgba(255, 199, 107, ' + syncAlpha.toFixed(3) + ')';
+    rpx.font = '700 ' + Math.max(8, RW * 0.018) + 'px ui-monospace, monospace';
+    rpx.textAlign = 'center';
+    rpx.textBaseline = 'middle';
+    rpx.fillText('SYNCING FEEDS…', RW / 2, RH / 2);
+
+    return true;
+  }
+
+  return false;
+}
+
+function drawSpeedHUD(t) {
+  /* appears during replay, ramps from 0 to 142.7 km/h */
+  if (t < 0.4) return;
+  const reveal = clamp((t - 0.4) / 0.4, 0, 1);
+  const ramp = clamp(t / 2.8, 0, 1);
+  const eased = easeOutCubic(ramp);
+  const speed = (142.7 * eased).toFixed(1);
+
+  const x = RW * 0.055;
+  const y = RH * 0.13;
+
+  rpx.save();
+  rpx.globalAlpha = reveal;
+
+  /* background pill */
+  rpx.fillStyle = 'rgba(3, 10, 14, 0.72)';
+  rpx.strokeStyle = 'rgba(95, 216, 232, 0.42)';
+  rpx.lineWidth = 1;
+  const pw = Math.min(RW * 0.28, 170);
+  const ph = Math.min(RH * 0.14, 58);
+  rpx.beginPath();
+  rpx.roundRect(x, y, pw, ph, 2);
+  rpx.fill();
+  rpx.stroke();
+
+  /* label */
+  rpx.fillStyle = 'rgba(255, 199, 107, 0.85)';
+  rpx.font = '600 ' + Math.max(6, RW * 0.0115) + 'px ui-monospace, monospace';
+  rpx.textAlign = 'left';
+  rpx.textBaseline = 'top';
+  rpx.fillText('BALL SPEED', x + 10, y + 8);
+
+  /* value */
+  rpx.fillStyle = '#eaf7fb';
+  rpx.font = '700 ' + Math.max(13, RW * 0.028) + 'px ui-monospace, monospace';
+  rpx.textBaseline = 'alphabetic';
+  rpx.fillText(speed, x + 10, y + ph - 12);
+
+  /* unit */
+  const valW = rpx.measureText(speed).width;
+  rpx.fillStyle = 'rgba(127, 230, 245, 0.7)';
+  rpx.font = '600 ' + Math.max(6, RW * 0.0105) + 'px ui-monospace, monospace';
+  rpx.fillText('KM/H', x + 10 + valW + 6, y + ph - 12);
+
+  rpx.restore();
+}
+
+function drawPitchMapHUD(t, ballLandingU) {
+  /* bottom-right top-down pitch map */
+  if (t < 1.0) return;
+  const reveal = clamp((t - 1.0) / 0.5, 0, 1);
+
+  const pw = Math.min(RW * 0.20, 128);
+  const ph = Math.min(RH * 0.36, 168);
+  const x = RW - pw - RW * 0.038;
+  const y = RH - ph - RH * 0.16;
+
+  rpx.save();
+  rpx.globalAlpha = reveal;
+
+  /* background */
+  rpx.fillStyle = 'rgba(3, 10, 14, 0.82)';
+  rpx.strokeStyle = 'rgba(95, 216, 232, 0.42)';
+  rpx.lineWidth = 1;
+  rpx.beginPath();
+  rpx.roundRect(x, y, pw, ph, 2);
+  rpx.fill();
+  rpx.stroke();
+
+  /* label */
+  rpx.fillStyle = 'rgba(255, 199, 107, 0.85)';
+  rpx.font = '600 ' + Math.max(5.5, RW * 0.0105) + 'px ui-monospace, monospace';
+  rpx.textAlign = 'left';
+  rpx.textBaseline = 'top';
+  rpx.fillText('PITCH MAP', x + 7, y + 6);
+
+  /* pitch rectangle */
+  const px = x + pw * 0.14;
+  const py = y + ph * 0.20;
+  const pwInner = pw * 0.72;
+  const phInner = ph * 0.70;
+
+  rpx.fillStyle = 'rgba(96, 168, 132, 0.14)';
+  rpx.fillRect(px, py, pwInner, phInner);
+
+  rpx.strokeStyle = 'rgba(210, 240, 255, 0.32)';
+  rpx.lineWidth = 1;
+  rpx.strokeRect(px + 0.5, py + 0.5, pwInner - 1, phInner - 1);
+
+  /* center line */
+  rpx.strokeStyle = 'rgba(210, 240, 255, 0.16)';
+  rpx.beginPath();
+  rpx.moveTo(px + pwInner / 2, py);
+  rpx.lineTo(px + pwInner / 2, py + phInner);
+  rpx.stroke();
+
+  /* stumps marker at bottom */
+  rpx.fillStyle = 'rgba(255, 199, 107, 0.75)';
+  const stumpW = Math.max(2, pwInner * 0.10);
+  rpx.fillRect(px + pwInner / 2 - stumpW / 2, py + phInner - 3, stumpW, 3);
+
+  /* ball landing dot */
+  if (t > 1.4) {
+    const dotAlpha = clamp((t - 1.4) / 0.4, 0, 1);
+    const dotX = px + pwInner / 2 + (ballLandingU || 0) * pwInner * 0.5;
+    const dotY = py + phInner * 0.36;
+
+    /* pulse */
+    const pulse = 1 + 0.25 * Math.sin(t * 6);
+    rpx.save();
+    rpx.globalAlpha = dotAlpha;
+    rpx.fillStyle = 'rgba(255, 199, 107, 0.28)';
+    rpx.beginPath();
+    rpx.arc(dotX, dotY, Math.max(3, pwInner * 0.05) * pulse * 2.2, 0, Math.PI * 2);
+    rpx.fill();
+
+    rpx.fillStyle = '#ffc76b';
+    rpx.beginPath();
+    rpx.arc(dotX, dotY, Math.max(2.4, pwInner * 0.05), 0, Math.PI * 2);
+    rpx.fill();
+    rpx.restore();
+  }
+
+  rpx.restore();
+}
+
 function drawReplay(t) {
+  /* prelude boot sequence */
+  if (drawBootPrelude(t * 1000)) return;
+
   drawPitchSurface();
   drawPads();
   drawStumps();
@@ -2046,14 +2347,12 @@ function drawReplay(t) {
     rpx.fill();
   }
 
-  /* ball */
   const pt = trackPoint(v);
   const pos = proj(pt.u, v, pt.h);
   const r = Math.max(2.4, 24 * pos.s);
   const spin = t * 4.5;
   drawBall(pos, r, spin);
 
-  /* impact flare */
   if (p > 0.9) {
     const k = (p - 0.9) / 0.1;
     rpx.save();
@@ -2065,7 +2364,6 @@ function drawReplay(t) {
     rpx.restore();
   }
 
-  /* chroma ghosting (subtle) */
   if (!REDUCED) {
     rpx.save();
     rpx.globalCompositeOperation = 'lighter';
@@ -2074,10 +2372,14 @@ function drawReplay(t) {
     rpx.drawImage(rpC, -1.7, 0, RW, RH);
     rpx.restore();
   }
+
+  /* HUD */
+  drawSpeedHUD(t);
+  drawPitchMapHUD(t, pt.u);
 }
 
 /* =====================================================================
-   7. TRACKING GRAPHIC
+   8. TRACKING GRAPHIC
    ===================================================================== */
 function drawTrackPath(v0, v1, dashed) {
   const N = 48;
@@ -2137,7 +2439,6 @@ function marker(v, color, label) {
     rpx.textAlign = 'center';
     rpx.textBaseline = 'alphabetic';
 
-    /* label pill */
     const mw = rpx.measureText(label).width;
     const pad = RW * 0.010;
     const bh = RW * 0.028;
@@ -2164,7 +2465,6 @@ function drawTrack(t) {
   const DASH_START = 2.00;
   const DASH_END   = 2.80;
 
-  /* wicket-zone projection (highlight) */
   if (t > 2.6) {
     const z = clamp((t - 2.6) / 0.6, 0, 1);
     rpx.save();
@@ -2173,9 +2473,8 @@ function drawTrack(t) {
     rpx.lineWidth = 1;
     rpx.setLineDash([4, 4]);
 
-    /* wicket zone rectangle behind stumps */
-    const zl = proj(-0.16, 1.0, 0);
-    const zr = proj( 0.16, 1.0, 0);
+    const zl  = proj(-0.16, 1.0, 0);
+    const zr  = proj( 0.16, 1.0, 0);
     const ztl = proj(-0.16, 1.0, 1.0);
     const ztr = proj( 0.16, 1.0, 1.0);
     rpx.beginPath();
@@ -2189,21 +2488,17 @@ function drawTrack(t) {
     rpx.restore();
   }
 
-  /* main path (release → impact) */
   const p1 = clamp(t / SOLID_END, 0, 1);
   if (p1 > 0) drawTrackPath(0.28, lerp(0.28, 0.88, easeInOutCubic(p1)), false);
 
-  /* projected path (impact → past stumps) */
   if (t > DASH_START) {
     const p2 = clamp((t - DASH_START) / (DASH_END - DASH_START), 0, 1);
     drawTrackPath(0.88, lerp(0.88, 1.10, easeInOutCubic(p2)), true);
   }
 
-  /* markers */
   if (t > 1.24) marker(0.58, 'rgba(126, 242, 255, 0.95)', 'PITCH');
   if (t > 1.62) marker(0.88, 'rgba(255, 199, 107, 0.95)', 'IMPACT');
 
-  /* travelling head */
   if (p1 < 1) {
     const v = lerp(0.28, 0.88, easeInOutCubic(p1));
     const q = trackPoint(v);
@@ -2218,7 +2513,6 @@ function drawTrack(t) {
     rpx.shadowBlur = 0;
   }
 
-  /* ghost ball sailing over the stumps */
   if (t > DASH_END) {
     const gp = clamp((t - DASH_END) / 1.0, 0, 1);
     const v = lerp(0.95, 1.10, gp);
@@ -2226,7 +2520,6 @@ function drawTrack(t) {
     const p = proj(q.u, v, q.h);
     const r = Math.max(2, 20 * p.s);
 
-    /* "missing" indicator cross */
     if (gp > 0.3) {
       const k = clamp((gp - 0.3) / 0.4, 0, 1);
       const crossR = r * 2.2;
@@ -2253,10 +2546,13 @@ function drawTrack(t) {
     rpx.fill();
     rpx.restore();
   }
+
+  /* HUD during tracking */
+  drawPitchMapHUD(t + 1.0, trackPoint(0.58).u);
 }
 
 /* =====================================================================
-   8. MASTER RENDER LOOP
+   9. MASTER RENDER LOOP
    ===================================================================== */
 const PHASE = {
   IDLE:    0,
@@ -2280,7 +2576,6 @@ let lastFrameTime = 0;
 function frame(nowMs) {
   rafId = requestAnimationFrame(frame);
 
-  /* throttle to ~60fps */
   if (nowMs - lastFrameTime < 14) return;
   lastFrameTime = nowMs;
 
@@ -2295,7 +2590,7 @@ function frame(nowMs) {
 }
 
 /* =====================================================================
-   9. SPLIT-FLAP BOARD
+   10. SPLIT-FLAP BOARD
    ===================================================================== */
 const TEXT_TOP = 'HAPPY BIRTHDAY';
 const TEXT_BOT = 'SADAF';
@@ -2305,9 +2600,9 @@ let allTiles = [];
 let boardSettled = false;
 let boardBuildToken = 0;
 
-const row1El   = $('#row1');
-const row2El   = $('#row2');
-const boardEl  = $('#board');
+const row1El  = $('#row1');
+const row2El  = $('#row2');
+const boardEl = $('#board');
 
 function setTileChar(el, ch) {
   el.dataset.ch = ch;
@@ -2338,9 +2633,6 @@ function makeTile(ch, tw) {
   return el;
 }
 
-/* The core split-flap animation.
-   - tf-top shows the current top half; rotates 0 → -90 (flips away, revealing th-top which we set to next)
-   - tf-bot shows the next bottom half; rotates 90 → 0 (flips in, covering th-bot) */
 function flipTile(el, next, dur, bounce) {
   const thTopI = el.querySelector('.th-top i');
   const thBotI = el.querySelector('.th-bot i');
@@ -2351,21 +2643,17 @@ function flipTile(el, next, dur, bounce) {
 
   const cur = el.dataset.ch || '';
 
-  /* setup */
   tfTopI.textContent = cur;
   tfBotI.textContent = next;
-  thTopI.textContent = next;  /* revealed when tfTop flips away */
-  /* thBotI remains cur until bottom finishes */
+  thTopI.textContent = next;
   tfTop.style.opacity = 1;
   tfBot.style.opacity = 1;
 
-  /* reset transforms */
   tfTop.style.transition = 'none';
   tfTop.style.transform  = 'rotateX(0deg)';
   tfBot.style.transition = 'none';
   tfBot.style.transform  = 'rotateX(90deg)';
 
-  /* force reflow */
   void el.offsetWidth;
 
   const half = Math.max(60, dur / 2);
@@ -2374,7 +2662,6 @@ function flipTile(el, next, dur, bounce) {
     ? 'cubic-bezier(.34, 1.42, .64, 1)'
     : 'cubic-bezier(.30, 1.10, .55, 1)';
 
-  /* animate top flap away */
   tfTop.style.transition = 'transform ' + half + 'ms ' + topEase;
   tfTop.style.transform  = 'rotateX(-90deg)';
 
@@ -2382,18 +2669,22 @@ function flipTile(el, next, dur, bounce) {
   clearTimeout(el._t2);
 
   el._t1 = setTimeout(function () {
-    /* animate bottom flap in */
     tfBot.style.transition = 'transform ' + half + 'ms ' + botEase;
     tfBot.style.transform  = 'rotateX(0deg)';
 
     el._t2 = setTimeout(function () {
-      /* commit — hide flipping pieces, update static bottom */
       thBotI.textContent = next;
       tfTop.style.transition = 'none';
       tfTop.style.opacity = 0;
       tfBot.style.transition = 'none';
       tfBot.style.opacity = 0;
       el.dataset.ch = next;
+
+      if (bounce) {
+        el.classList.remove('settled');
+        void el.offsetWidth;
+        el.classList.add('settled');
+      }
     }, half + 16);
   }, half);
 }
@@ -2416,12 +2707,10 @@ function layoutBoard() {
   const boardW = Math.min(window.innerWidth * 0.94, 1100);
   boardEl.style.width = boardW + 'px';
 
-  /* row 1: HAPPY BIRTHDAY */
   const n1 = TEXT_TOP.length;
   const g1 = Math.max(1.5, boardW * 0.0055);
   const tw1 = Math.floor((boardW - (n1 - 1) * g1) / n1);
 
-  /* row 2: SADAF — larger, wider, guaranteed single line */
   const n2 = TEXT_BOT.length;
   const g2 = Math.max(3, boardW * 0.011);
   const tw2 = Math.floor(Math.min(
@@ -2500,13 +2789,14 @@ function runFlips(onDone) {
 }
 
 /* =====================================================================
-   10. SEQUENCE ORCHESTRATION
+   11. SEQUENCE ORCHESTRATION
    ===================================================================== */
 const sceneEl   = $('#scene');
 const idleEl    = $('#idle');
 const stampEl   = $('#stamp');
 const monitorEl = $('#monitor');
 const pendingEl = $('#pending');
+const commentaryEl = $('#commentary');
 const verdictEl = $('#verdict');
 const flashEl   = $('#flash');
 
@@ -2525,27 +2815,40 @@ function clearAllTimers() {
   timers = [];
 }
 
+function setCommentary(text, show) {
+  if (show === false) {
+    commentaryEl.classList.remove('on');
+    return;
+  }
+  commentaryEl.textContent = text;
+  commentaryEl.classList.add('on');
+}
+
 function resetVisuals() {
   stampEl.classList.remove('go');
   monitorEl.classList.remove('on', 'gone');
   pendingEl.classList.remove('on');
+  commentaryEl.classList.remove('on');
   verdictEl.classList.remove('show', 'split');
   boardEl.classList.remove('on', 'done');
   [tk1, tk2, tk3].forEach(t => t.classList.remove('on'));
   flashEl.classList.remove('go');
   sceneEl.classList.remove('shake');
   boardSettled = false;
+  cameraFlashes = [];
 }
 
 function runSequence() {
   resetVisuals();
   setPhase(PHASE.IDLE);
 
-  /* camera push */
   if (!REDUCED) sceneEl.classList.add('push');
-  if (SFX.enabled) SFX.riser(1.1);
+  if (SFX.enabled) {
+    SFX.riser(1.1);
+    SFX.murmur(6.0);
+  }
 
-  /* STEP 1 — REVIEW REQUESTED stamp */
+  /* STEP 1 — Review requested */
   T(function () {
     stampEl.classList.add('go');
     if (SFX.enabled) SFX.stamp();
@@ -2553,50 +2856,77 @@ function runSequence() {
 
   T(function () { stampEl.classList.remove('go'); }, 1900);
 
-  /* STEP 2 — monitor rises */
+  /* STEP 2 — Monitor rises, boot sequence begins */
   T(function () {
     monitorEl.classList.add('on');
     sizeCanvases();
     if (SFX.enabled) SFX.sub(70, 0.8, 0.45);
   }, 2000);
 
-  /* STEP 3 — replay */
+  /* STEP 3 — Replay begins */
   T(function () {
     setPhase(PHASE.REPLAY);
+    phaseT0 = now() - 1600; /* start with boot prelude already partially visible? no—reset to 0 */
+    phaseT0 = now();
     pendingEl.classList.add('on');
-  }, 2800);
+    setCommentary('Third umpire checking ball tracking\u2026', true);
+  }, 2400);
 
-  /* STEP 4 — tracking graphic */
+  /* commentary update */
+  T(function () {
+    setCommentary('Ball pitching \u2014 looking close\u2026', true);
+  }, 3800);
+
+  T(function () {
+    setCommentary('Impact in line \u2014 checking wickets\u2026', true);
+  }, 4900);
+
+  /* STEP 4 — Tracking graphic */
   T(function () {
     setPhase(PHASE.TRACK);
     if (SFX.enabled) SFX.riser(0.6);
-  }, 6000);
+    setCommentary('Wickets \u2014 projecting the path\u2026', true);
+  }, 6200);
 
-  /* STEP 5 — ticks */
-  T(function () { tk1.classList.add('on'); if (SFX.enabled) SFX.tick(); }, 7300);
-  T(function () { tk2.classList.add('on'); if (SFX.enabled) SFX.tick(); }, 7750);
-  T(function () { tk3.classList.add('on'); if (SFX.enabled) SFX.tick(); }, 8850);
+  /* ticks */
+  T(function () {
+    tk1.classList.add('on');
+    if (SFX.enabled) SFX.tick();
+  }, 7500);
 
-  /* STEP 6 — verdict */
-  T(function () { landVerdict(); }, 9800);
+  T(function () {
+    tk2.classList.add('on');
+    if (SFX.enabled) SFX.tick();
+  }, 7950);
 
-  /* STEP 7 — board appears behind verdict */
-  T(function () { boardEl.classList.add('on'); }, 11150);
+  T(function () {
+    tk3.classList.add('on');
+    if (SFX.enabled) SFX.tick();
+    setCommentary('Wickets missing \u2014 this is going over\u2026', true);
+  }, 9050);
 
-  /* STEP 8 — verdict splits */
+  /* STEP 6 — Verdict */
+  T(function () { landVerdict(); }, 9900);
+
+  /* STEP 7 — Board appears */
+  T(function () { boardEl.classList.add('on'); }, 11250);
+
+  /* STEP 8 — Verdict splits */
   T(function () {
     verdictEl.classList.add('split');
     if (SFX.enabled) SFX.sub(46, 1.3, 0.62);
     sceneEl.classList.remove('push');
-  }, 11450);
+  }, 11550);
 
-  /* STEP 9 — tiles flip */
+  /* STEP 9 — Tiles flip */
   T(function () {
     setPhase(PHASE.BOARD);
+    setCommentary('', false);
     runFlips(function () {
       boardEl.classList.add('done');
+      if (SFX.enabled) SFX.whoosh(0.9);
     });
-  }, 12200);
+  }, 12300);
 }
 
 function landVerdict() {
@@ -2604,8 +2934,8 @@ function landVerdict() {
 
   monitorEl.classList.add('gone');
   pendingEl.classList.remove('on');
+  setCommentary('', false);
 
-  /* flash + shake */
   flashEl.classList.remove('go');
   void flashEl.offsetWidth;
   flashEl.classList.add('go');
@@ -2620,10 +2950,28 @@ function landVerdict() {
     setTimeout(function () { SFX.sub(42, 1.5, 0.50); }, 130);
     setTimeout(function () { SFX.sub(30, 1.9, 0.30); }, 260);
   }
+
+  /* camera flash celebration in the stands */
+  if (!REDUCED) {
+    const standRegion = {
+      left: 0,
+      right: W,
+      top: H * 0.23,
+      bottom: H * 0.63
+    };
+    spawnCameraFlashes(standRegion, 45, 1400);
+
+    /* shutter ticks */
+    if (SFX.enabled) {
+      for (let i = 0; i < 12; i++) {
+        setTimeout(function () { SFX.shutter(); }, 200 + i * 100 + rand(0, 80));
+      }
+    }
+  }
 }
 
 /* =====================================================================
-   11. WIRING
+   12. WIRING
    ===================================================================== */
 $('#beginBtn').addEventListener('click', function () {
   SFX.unlock();
@@ -2646,7 +2994,6 @@ $('#replayBtn').addEventListener('click', function () {
 });
 
 const soundBtn = $('#soundBtn');
-const soundIco = $('#soundIco');
 
 soundBtn.addEventListener('click', function () {
   SFX.enabled = !SFX.enabled;
@@ -2662,7 +3009,6 @@ soundBtn.addEventListener('click', function () {
   }
 });
 
-/* keyboard: space or enter to begin */
 window.addEventListener('keydown', function (e) {
   if ((e.key === 'Enter' || e.key === ' ') &&
       !idleEl.classList.contains('hide')) {
@@ -2671,7 +3017,6 @@ window.addEventListener('keydown', function (e) {
   }
 });
 
-/* resize */
 let rzT = null;
 window.addEventListener('resize', function () {
   clearTimeout(rzT);
@@ -2681,7 +3026,6 @@ window.addEventListener('resize', function () {
   }, 150);
 });
 
-/* visibility — pause rendering to save battery */
 document.addEventListener('visibilitychange', function () {
   if (document.hidden) {
     if (rafId) { cancelAnimationFrame(rafId); rafId = 0; }
@@ -2691,14 +3035,13 @@ document.addEventListener('visibilitychange', function () {
 });
 
 /* =====================================================================
-   12. BOOT
+   13. BOOT
    ===================================================================== */
 function boot() {
   sizeCanvases();
   initDust();
   layoutBoard();
 
-  /* ensure monitor canvas sizes correctly after layout */
   requestAnimationFrame(function () {
     sizeCanvases();
     requestAnimationFrame(sizeCanvases);
@@ -2716,4 +3059,4 @@ if (document.readyState === 'loading') {
 })();
 </script>
 </body>
-</html>
+     </html>
